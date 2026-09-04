@@ -12,3 +12,6 @@
 - 2026-09-04. `.venv/bin/python -m compileall -q app tests`와 노트북 JSON 유효성 검사가 통과했다.
 - 2026-09-04. `.venv/bin/python tests/test_final.py`는 외부 Gemini 및 LangSmith 호스트를 해석할 수 없는 네트워크 제한 때문에 완료되지 않았다.
 - 2026-09-04. `git diff --check`에서 기존 `app/tools/custom_tools.py` 수정의 후행 공백 2건이 확인됐다. 사용자 작업을 임의로 고치지 않고 그대로 보존했다.
+- 2026-09-04. macOS에서는 Linux 전용 `install/install_all.sh` 대신 Python 가상환경에서 `install/requirements.txt`를 직접 설치하도록 안내한다.
+- 2026-09-04. 실제 호환성 변경은 `pysqlite3-binary`의 Linux x86_64 조건부 설치, 정규화된 `finance-datareader` 패키지명, 기존 `LANGSMITH_PROJECT` 값을 보존하는 서버 설정이다.
+- 2026-09-04. `.env`는 이미 무시되고 추적되지 않는다. 추가로 `.env.*`도 무시하고 공개 템플릿인 `.env.example`만 예외 처리한다.

@@ -18,7 +18,7 @@
 | **권한 및 보안 제어** | 없음 (완전자율) | **Human-in-the-Loop (`__interrupt__` 기반 권한 게이트 & 웹 승인/거부 인터랙션)** |
 | **안전 거버넌스** | 없음 | **Llama Guard 3 S1~S5 입력 보안 필터 & NeMo 규정 일치 리디렉션 가드레일** |
 | **관측성 및 로깅** | 단순 콘솔 출력 | **`AgentLogTracer` 비동기 큐 기반 감사 궤적 적재 & `log_analyzer` 통계 대시보드** |
-| **런타임 프레임워크** | LangChain 구버전 | **LangChain 1.3+ / LangGraph 1.2+ / Python 3.12 (WSL2 및 Codespaces 최적화)** |
+| **런타임 프레임워크** | LangChain 구버전 | **LangChain 1.3+ / LangGraph 1.2+ / Python 3.12 (macOS, WSL2 및 Codespaces 지원)** |
 
 ---
 
@@ -29,7 +29,26 @@ GitHub Codespaces 환경에서는 사전 빌드된 Docker 컨테이너를 기반
 1. 리포지토리 상단의 **[Code] ➔ [Codespaces] ➔ [Create codespace on main]**을 클릭합니다.
 2. 컨테이너가 열리면 프로젝트 루트의 `.env` 파일을 확인하고 API 키를 입력합니다.
 
-### 2. 로컬 환경 (WSL2 / Linux 수동 설치)
+### 2. macOS 로컬 환경
+
+macOS에서는 Linux 시스템 패키지를 설치하는 `install/install_all.sh`를 실행하지 않고, Python 3.12 가상환경에 의존성을 직접 설치합니다.
+
+```bash
+# 프로젝트 루트에서 실행
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r install/requirements.txt
+python -m playwright install chromium
+```
+
+macOS 호환을 위해 다음 사항이 반영되어 있습니다.
+
+- `pysqlite3-binary`는 macOS에서 빌드되지 않도록 Linux x86_64 환경에만 조건부 설치됩니다. macOS에서는 Python에 포함된 `sqlite3`를 사용합니다.
+- PyPI 정규 패키지명인 `finance-datareader`를 사용합니다.
+- 로컬 `.env`에 지정한 `LANGSMITH_PROJECT`가 있으면 서버의 기본값으로 덮어쓰지 않습니다.
+
+### 3. 로컬 환경 (WSL2 / Linux 수동 설치)
 로컬 우분투 또는 WSL2 환경에서 직접 실행할 경우 자동 설치 스크립트를 사용하세요:
 
 ```bash
@@ -39,7 +58,13 @@ bash install_all.sh
 ```
 
 ### 🔑 환경 변수 설정 (`.env`)
-프로젝트 루트에 생성된 `.env` 파일에 사용할 API 키를 설정합니다:
+공개 템플릿을 복사한 뒤 프로젝트 루트의 `.env` 파일에 사용할 API 키를 설정합니다.
+
+```bash
+cp .env.example .env
+```
+
+`.env`와 `.env.*` 파일은 Git에서 제외되며, 공유 가능한 `.env.example`만 추적됩니다. 실제 API 키나 시크릿을 `.env.example`에 입력하지 마세요.
 
 ```env
 GOOGLE_API_KEY="your-gemini-api-key"
