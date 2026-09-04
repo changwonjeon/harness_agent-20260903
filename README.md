@@ -22,6 +22,27 @@
 
 ---
 
+## 🗓️ 2026년 9월 4일 진행 내역
+
+2일차 교육 및 실습 과정에서 다음 내용을 저장소에 반영했습니다.
+
+- 원본 `upstream/main`의 최신 변경을 기존 로컬 작업을 보존한 상태로 통합했습니다.
+- Mission 08 졸업 검증 미션, 최종 통합 테스트와 미들웨어 파이프라인 레퍼런스를 추가했습니다.
+- macOS에서 `uv`와 Python 3.12를 사용하는 로컬 실습환경 구성 절차를 문서화했습니다.
+- `.env` 계열 비밀 파일의 Git 제외 규칙과 공개용 `.env.example` 사용 원칙을 보강했습니다.
+- 실제 저장소 통합 과정을 바탕으로 [Git upstream 통합 튜토리얼](git-work-tutorial_20260904-0927.md)을 작성했습니다.
+- 강의안, 과정 안내, 공유문서 및 참고 실습 파일을 [`_tutorial/`](_tutorial/) 폴더에 추가했습니다.
+
+### `_tutorial/` 교육자료
+
+- [`readme.txt`](_tutorial/readme.txt): 2026년 9월 3일부터 4일까지 진행되는 2일 과정의 교육 정보와 전체 학습 주제
+- [`Agent_harness.pdf`](_tutorial/Agent_harness.pdf): 하네스 엔지니어링 기반 프로덕션 에이전트 개발 강의안
+- `공유문서.docx`: GitHub Codespaces 실습환경 설정과 참고 자료
+- `공유폴더/`: Mission 02 실습 참고 코드
+- `참고자료/`: LangChain 기반 컨텍스트 엔지니어링 참고 노트북
+
+---
+
 ## 🚀 시작하기 (환경 세팅)
 
 ### 1. GitHub Codespaces 환경 (권장)
@@ -115,7 +136,8 @@ missions/
 ├── 04_mission_skills.md                    # 🧰 금융 분석 전문 스킬(10종) 동적 카탈로그 주입 & 대시보드
 ├── 05_mission_human_in_the_loop.md         # 🛑 roll_dice 타깃 HITL 권한 게이트 & 웹 대화형 승인/거절
 ├── 06_mission_guardrails.md                # 🛡️ 프롬프트 인젝션(S4) 선제 차단 & 오프토픽 대체 안내
-└── 07_mission_logging_and_observability.md # 📊 비동기 감사 궤적 적재 & 세션 데이터 분석 대시보드
+├── 07_mission_logging_and_observability.md # 📊 비동기 감사 궤적 적재 & 세션 데이터 분석 대시보드
+└── 08_mission_final_integration_test.md    # 🎓 전체 미들웨어 파이프라인 최종 통합 검증
 ```
 
 ---
@@ -165,6 +187,7 @@ python -m app.utils.log_analyzer
 | **`test_mission05.py`** | Mission 05 | HITL (`roll_dice` 타깃 권한 게이트 & 승인/거부 재개) | `python tests/test_mission05.py` |
 | **`test_mission06.py`** | Mission 06 | Guardrails (입력 보안 필터 차단 & 주제 일치 리디렉션) | `python tests/test_mission06.py` |
 | **`test_mission07.py`** | Mission 07 | Logging (`AgentLogTracer` 비동기 적재 & `log_analyzer` 분석) | `python tests/test_mission07.py` |
+| **`test_final.py`** | Mission 08 | 전체 미들웨어 결합 및 프로덕션 에이전트 최종 통합 검증 | `python tests/test_final.py` |
 
 ---
 
@@ -172,8 +195,9 @@ python -m app.utils.log_analyzer
 
 ```text
 harness_agent/
+├── _tutorial/              # 📚 강의안, 과정 안내, 공유문서 및 참고 실습 자료
 ├── notebooks/              # 📗 단계별 핸즈온 실습 노트북 (0~7)
-├── missions/               # 🎯 단계별 프로덕션 미션 가이드 (00~07)
+├── missions/               # 🎯 단계별 프로덕션 미션 가이드 (00~08)
 ├── tests/                  # 🧪 미션별 1:1 매핑 자동화 검증 스크립트
 ├── configs/                # ⚙️ 런타임 하네스 설정 파일 모음
 │   ├── model.config        #   └── 메인/가드레일 LLM 모델 지정
