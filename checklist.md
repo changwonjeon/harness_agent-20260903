@@ -21,3 +21,10 @@
 - [x] 현재 requirements 기반 구조와 `uv sync` 미사용 이유를 명시한다.
 - [x] 명령과 Markdown 변경을 검증한다.
 - [x] 정정 내용을 별도 커밋으로 남긴다.
+
+## Git 통합 작업 학습 자료
+
+- [x] 실제 시작 상태와 분석 과정을 초보자 관점으로 설명한다.
+- [x] stash, fetch, fast-forward, apply, commit, push 개념을 단계별로 설명한다.
+- [x] 충돌 대응과 재사용 가능한 명령 요약을 포함한다.
+- [x] 지정된 Markdown 파일을 검증하고 별도 커밋으로 남긴다.
