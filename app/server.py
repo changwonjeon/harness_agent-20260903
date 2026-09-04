@@ -23,7 +23,7 @@ if os.path.exists(dotenv_path):
     
     # LangSmith Project Setting (Server Specific)
     os.environ["LANGSMITH_TRACING"] = "true"
-    os.environ["LANGSMITH_PROJECT"] = "llmops-agent-server"
+    os.environ.setdefault("LANGSMITH_PROJECT", "llmops-agent-server")
     print(f"📈 LangSmith Tracing Enabled. Project: {os.environ['LANGSMITH_PROJECT']}")
 else:
     print("Warning: .env file not found.")

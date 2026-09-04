@@ -37,7 +37,7 @@ tqdm==4.67.1
 imagehash==4.3.2
 protobuf
 psycopg2-binary==2.9.11
-pysqlite3-binary
+pysqlite3-binary; sys_platform == "linux" and platform_machine == "x86_64"
 
 # Web & Agent Framework Utilities
 chainlit
@@ -59,7 +59,7 @@ pandas
 openpyxl>=3.1.5
 pyarrow>=22.0.0
 yfinance
-FinanceDataReader
+finance-datareader
 
 # HTTP, Parsing & Runtime Utilities
 aiohttp

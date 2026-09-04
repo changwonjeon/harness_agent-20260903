@@ -16,6 +16,15 @@ from app.utils import init_chat_model
 from app.utils.context import AgentContext
 from app.prompts import SUPERVISOR_SYSTEM_PROMPT
 
+from app.middleware.error_control.self_recovery import (
+    ModelFallbackMiddleware,
+    ToolErrorHandlerMiddleware,
+    ModelCallLimitMiddleware,
+)
+
+from app.tools import tools_supervisor
+
+
 # 1. 에이전트 프로필
 AGENT_METADATA = {
     "name": "main_agent",
@@ -55,10 +64,17 @@ async def create_agent_executor():
     await checkpointer.setup()
 
     # 4. 미들웨어 파이프라인 (Mission 02에서 Self-Recovery 미들웨어 추가)
-    middleware = []
+    middleware = [
+        ModelFallbackMiddleware(
+            max_retries=3,
+            fallback_model_name="gemini-2.5-pro"
+        ),
+        ToolErrorHandlerMiddleware(max_retries=1), #
+        ModelCallLimitMiddleware(run_limit=10),
+    ]
 
     # 5. 도구 바인딩 (Mission 02에서 tools_supervisor 연결)
-    active_tools = []
+    active_tools = tools_supervisor#[]
 
     # 6. 하네스로 결합된 최종 메인 에이전트 인스턴스 구축
     main_agent = create_agent(

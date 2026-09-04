@@ -31,7 +31,7 @@ AGENT_METADATA = {
 # 1단계에서 app/tools/custom_tools.py에 작성한 도구를 여기에 임포트하세요.
 # 예시: from app.tools.custom_tools import roll_dice, convert_currency
 # -------------------------------------------------------------------------------
-# from app.tools.custom_tools import ...
+from app.tools.custom_tools import roll_dice, convert_currency, memo_writer
 
 
 def _load_config(path: str, default: dict) -> dict:
@@ -71,7 +71,7 @@ async def create_agent_executor():
     # custom_tools에서 임포트한 도구를 active_tools 리스트에 결합하세요.
     # 예시: active_tools = list(tools_chatbot) + [roll_dice, convert_currency]
     # ---------------------------------------------------------------------------
-    active_tools = list(tools_chatbot)
+    active_tools = list(tools_chatbot) + [ roll_dice, convert_currency, memo_writer ]
     
     # 5. 하네스로 결합된 최종 에이전트 인스턴스 구축
     chatbot_agent = create_agent(
