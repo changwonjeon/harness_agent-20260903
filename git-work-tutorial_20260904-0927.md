@@ -85,8 +85,14 @@ Git 작업에서 가장 중요한 습관은 명령부터 실행하지 않고 현
 이번에는 다음 명령을 사용했다.
 
 ```bash
+# TIP: 변경을 일으키지 않는 조회 명령부터 실행하면 현재 상태를 안전하게 파악할 수 있다.
+# --short는 파일 상태를 간결하게, --branch는 현재 브랜치 관계를 함께 표시한다.
 git status --short --branch
+
+# TIP: fetch와 push 주소가 다르게 설정될 수도 있으므로 두 주소를 모두 확인한다.
 git remote -v
+
+# TIP: -vv는 로컬 브랜치가 추적하는 원격 브랜치와 마지막 커밋을 보여준다.
 git branch -vv
 ```
 
@@ -120,6 +126,7 @@ git branch -vv
 이 상황에서 무작정 다음 명령을 실행할 수도 있다.
 
 ```bash
+# TIP: pull은 fetch와 merge를 한 번에 수행하므로 현재 사례에서는 바로 실행하지 않았다.
 git pull upstream main
 ```
 
@@ -144,6 +151,8 @@ git pull ≈ git fetch + git merge
 다음 명령으로 로컬 작업을 임시 보관했다.
 
 ```bash
+# TIP: --include-untracked를 빼면 Git이 아직 추적하지 않는 새 파일이 누락될 수 있다.
+# -m 메시지는 stash가 여러 개 쌓였을 때 백업 목적을 구분하는 데 도움이 된다.
 git stash push --include-untracked \
   -m "codex: upstream 통합 전 로컬 작업 백업"
 ```
@@ -159,6 +168,7 @@ git stash push --include-untracked \
 stash가 생성됐는지는 다음 명령으로 확인했다.
 
 ```bash
+# TIP: stash 번호는 새 stash가 추가되면 바뀔 수 있으므로 복원 직전에도 목록을 확인한다.
 git stash list
 ```
 
@@ -191,6 +201,8 @@ stash@{0}
 다음 명령을 실행했다.
 
 ```bash
+# TIP: fetch는 원격 이력만 내려받으며 현재 작업 파일이나 main 브랜치를 바꾸지 않는다.
+# upstream과 main이 실제 리모트명과 브랜치명인지 git remote -v로 먼저 확인한다.
 git fetch upstream main --prune
 ```
 
@@ -223,6 +235,7 @@ main, origin/main
 다음 명령으로 어느 쪽에만 존재하는 커밋이 몇 개인지 확인했다.
 
 ```bash
+# TIP: 결과의 왼쪽은 main에만 있는 커밋 수, 오른쪽은 upstream/main에만 있는 커밋 수다.
 git rev-list --left-right --count main...upstream/main
 ```
 
@@ -259,7 +272,10 @@ A ─── B ┤
 추가로 다음 명령으로 실제 커밋 그래프와 변경 파일을 확인했다.
 
 ```bash
+# TIP: 먼저 커밋 그래프를 보고 브랜치가 직선인지 갈라졌는지 확인한다.
 git log --oneline --decorate --graph --max-count=20 --all
+
+# TIP: --stat은 파일별 변경량을 요약하고 --name-status는 파일 상태만 간결하게 표시한다.
 git diff --stat main..upstream/main
 git diff --name-status main..upstream/main
 ```
@@ -278,6 +294,7 @@ df37a89 feat: Mission 08 졸업 검증 + 미들웨어 레퍼런스 + 경로 정�
 다음 명령으로 원본 변경을 로컬 `main`에 반영했다.
 
 ```bash
+# TIP: --ff-only는 브랜치가 갈라졌을 때 예상하지 않은 병합 커밋 생성을 막아준다.
 git merge --ff-only upstream/main
 ```
 
@@ -308,6 +325,7 @@ fast-forward는 새로운 병합 커밋을 만들지 않는다. 기존 커밋의
 원본 최신 상태가 된 `main` 위에 stash의 로컬 작업을 다시 적용했다.
 
 ```bash
+# TIP: apply는 stash를 적용한 뒤에도 백업을 남긴다. 검증 전에는 pop보다 안전하다.
 git stash apply stash@{0}
 ```
 
@@ -335,6 +353,7 @@ df37a89  원본 커밋
 stash 백업은 현재도 `stash@{0}`에 남아 있다. 필요가 없어졌다고 확신할 때 다음 명령으로 개별 삭제할 수 있다.
 
 ```bash
+# TIP: drop은 해당 백업을 삭제한다. git stash list로 번호를 재확인한 뒤 실행한다.
 git stash drop stash@{0}
 ```
 
@@ -366,11 +385,15 @@ stash에 있던 로컬 내용
 예시는 다음과 같다.
 
 ```bash
+# TIP: status로 전체 충돌 상태를 보고, diff-filter=U로 미해결 파일만 추린다.
 git status
 git diff --name-only --diff-filter=U
 
 # 편집기에서 충돌을 해결한 뒤 실행
+# TIP: git add는 파일을 삭제하는 명령이 아니라 해결 완료 상태로 스테이징하는 명령이다.
 git add app/example.py
+
+# TIP: diff --check는 후행 공백과 남아 있는 충돌 표시 같은 패치 오류를 찾는다.
 git diff --check
 ```
 
@@ -383,6 +406,7 @@ Git이 충돌 없이 파일을 합쳤다고 해서 프로그램이 정상 동작
 먼저 패치의 공백 문제를 확인했다.
 
 ```bash
+# TIP: 출력이 없고 종료 코드가 0이면 검사 대상 문제가 없다는 뜻이다.
 git diff --check
 ```
 
@@ -414,6 +438,7 @@ Python 문법과 노트북 JSON 구조도 확인했다.
 검증 후 로컬 작업을 스테이징했다.
 
 ```bash
+# TIP: git add 전에 git diff를 읽고 내가 의도한 파일만 명시적으로 스테이징한다.
 git add app/agents/chatbot.py \
   app/agents/main_agent.py \
   app/server.py \
@@ -428,6 +453,7 @@ git add app/agents/chatbot.py \
 그다음 하나의 논리적인 커밋으로 저장했다.
 
 ```bash
+# TIP: 커밋 메시지는 무엇을 했는지보다 변경 목적이 드러나도록 한 문장으로 작성한다.
 git commit -m "feat: 로컬 실습 결과와 원본 업데이트 통합"
 ```
 
@@ -456,6 +482,7 @@ df37a89  upstream Mission 08 업데이트
 통합 후 macOS 로컬 실행 방법과 `.env` 보호 규칙도 수정했다. 이 작업은 앞선 기능 구현과 목적이 다르므로 별도 커밋으로 만들었다.
 
 ```bash
+# TIP: 기능 변경과 문서 변경은 목적이 다르므로 되돌리기 쉽게 별도 커밋으로 남겼다.
 git commit -m "docs: macOS 로컬 환경과 비밀 파일 관리 안내"
 ```
 
@@ -480,6 +507,7 @@ git commit -m "docs: macOS 로컬 환경과 비밀 파일 관리 안내"
 로컬 커밋을 내 GitHub 포크의 `main`으로 전송했다.
 
 ```bash
+# TIP: origin이 내 포크를 가리키는지 git remote -v로 확인한 뒤 푸시한다.
 git push origin main
 ```
 
@@ -488,7 +516,10 @@ git push origin main
 푸시 후 다음 명령으로 로컬과 원격이 같은 커밋을 가리키는지 확인했다.
 
 ```bash
+# TIP: status에서 ahead와 behind가 사라졌는지 확인한다.
 git status --short --branch
+
+# TIP: 두 해시가 같으면 로컬 HEAD와 origin/main이 같은 커밋을 가리킨다.
 git rev-parse HEAD
 git rev-parse origin/main
 ```
@@ -545,40 +576,50 @@ origin/main ── 2ae8e50
 
 ```bash
 # 1. 현재 상태와 리모트 확인
+# TIP: 아래 세 명령은 파일을 변경하지 않는 안전한 조회 명령이다.
 git status --short --branch
 git remote -v
 git branch -vv
 
 # 2. 커밋하지 않은 작업 백업
+# TIP: 새 파일까지 보관하려면 --include-untracked를 유지한다.
 git stash push --include-untracked -m "upstream 통합 전 백업"
 git stash list
 
 # 3. 원본 최신 정보 가져오기
+# TIP: fetch 단계에서는 main과 작업 파일이 바뀌지 않는다.
 git fetch upstream main --prune
 
 # 4. 커밋 관계와 변경 파일 분석
+# TIP: 숫자만 보지 말고 그래프와 파일 목록도 함께 확인한다.
 git rev-list --left-right --count main...upstream/main
 git log --oneline --decorate --graph --all --max-count=20
 git diff --name-status main..upstream/main
 
 # 5. fast-forward가 가능할 때만 반영
+# TIP: 실패하면 강제로 진행하지 말고 브랜치가 갈라진 이유부터 조사한다.
 git merge --ff-only upstream/main
 
 # 6. 로컬 작업 다시 적용
+# TIP: 검증이 끝날 때까지 stash 백업을 유지하기 위해 apply를 사용한다.
 git stash apply stash@{0}
 
 # 7. 충돌과 diff 검사
+# TIP: 충돌이 없더라도 애플리케이션 테스트는 별도로 실행해야 한다.
 git status
 git diff --check
 
 # 8. 프로젝트 테스트 후 커밋
+# TIP: <검증한 파일들>은 예시 자리표시자이므로 실제 파일명으로 바꿔야 한다.
 git add <검증한 파일들>
 git commit -m "변경 목적을 설명하는 메시지"
 
 # 9. 내 원격 저장소로 push
+# TIP: upstream이 아니라 내 포크인 origin으로 보내는지 다시 확인한다.
 git push origin main
 
 # 10. 최종 상태 확인
+# TIP: push 성공 메시지만 믿지 말고 브랜치 상태와 그래프를 마지막으로 확인한다.
 git status --short --branch
 git log --oneline --decorate --graph --max-count=10
 ```
