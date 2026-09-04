@@ -14,3 +14,10 @@
 - [x] `.env` 계열 파일을 Git에서 제외하고 `.env.example`만 유지한다.
 - [x] README와 ignore 규칙을 검증한다.
 - [x] 문서화 변경을 별도 커밋으로 남긴다.
+
+## macOS uv 환경 구성 정정
+
+- [x] macOS 환경 생성과 의존성 설치 명령을 `uv` 기반으로 변경한다.
+- [x] 현재 requirements 기반 구조와 `uv sync` 미사용 이유를 명시한다.
+- [x] 명령과 Markdown 변경을 검증한다.
+- [x] 정정 내용을 별도 커밋으로 남긴다.

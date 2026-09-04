@@ -31,16 +31,18 @@ GitHub Codespaces 환경에서는 사전 빌드된 Docker 컨테이너를 기반
 
 ### 2. macOS 로컬 환경
 
-macOS에서는 Linux 시스템 패키지를 설치하는 `install/install_all.sh`를 실행하지 않고, Python 3.12 가상환경에 의존성을 직접 설치합니다.
+macOS에서는 Linux 시스템 패키지를 설치하는 `install/install_all.sh`를 실행하지 않고, `uv`로 Python 3.12 가상환경과 의존성을 구성합니다.
 
 ```bash
 # 프로젝트 루트에서 실행
-python3.12 -m venv .venv
+brew install uv
+uv venv --python 3.12 .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r install/requirements.txt
-python -m playwright install chromium
+uv pip install --python .venv/bin/python -r install/requirements.txt
+.venv/bin/python -m playwright install chromium
 ```
+
+현재 저장소는 `requirements.txt` 기반이므로 `pyproject.toml`과 `uv.lock`을 요구하는 `uv sync` 대신 `uv pip install`을 사용합니다.
 
 macOS 호환을 위해 다음 사항이 반영되어 있습니다.
 

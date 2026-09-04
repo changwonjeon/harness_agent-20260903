@@ -15,3 +15,5 @@
 - 2026-09-04. macOS에서는 Linux 전용 `install/install_all.sh` 대신 Python 가상환경에서 `install/requirements.txt`를 직접 설치하도록 안내한다.
 - 2026-09-04. 실제 호환성 변경은 `pysqlite3-binary`의 Linux x86_64 조건부 설치, 정규화된 `finance-datareader` 패키지명, 기존 `LANGSMITH_PROJECT` 값을 보존하는 서버 설정이다.
 - 2026-09-04. `.env`는 이미 무시되고 추적되지 않는다. 추가로 `.env.*`도 무시하고 공개 템플릿인 `.env.example`만 예외 처리한다.
+- 2026-09-04. README의 첫 macOS 안내는 `venv + pip`로 작성되어 `uv` 기반이라는 사용자 의도와 달랐다.
+- 2026-09-04. 저장소에는 `pyproject.toml`과 `uv.lock`이 없으므로 `uv sync` 대신 `uv venv`와 `uv pip install -r install/requirements.txt`를 사용한다.
